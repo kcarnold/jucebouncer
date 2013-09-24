@@ -4,6 +4,9 @@
 #include "mongoose.h"
 #include "NonDeletingOutputStream.h"
 #include "urlutils.h"
+#include "WebOutputStream.h"
+#include "WebOutputStream.cpp"
+
 
 #define PLUGIN_POOL_SIZE 0
 #define PLUGIN_REL_PATH "plugins/miniTERA.vst"
@@ -314,10 +317,16 @@ static int beginRequestHandler(struct mg_connection *conn) {
   }
 
   MemoryBlock block;
-  MemoryOutputStream ostream(block, false);
+  WebOutputStream ostream(conn);
 
   // DBG << "Rendering plugin request" << endl;
   int64 startTime = Time::currentTimeMillis();
+  mg_printf(conn, "HTTP/1.0 200 OK\r\n"
+            "Content-Length: %d\r\n"
+            "Content-Type: %s\r\n"
+            "\r\n",
+            1024*1024*1024, params.getContentType());
+
   bool result = handlePluginRequest(params, ostream);
   if (!result) {
     DBG << "-> Unable to handle plugin request!" << endl;
@@ -325,15 +334,9 @@ static int beginRequestHandler(struct mg_connection *conn) {
     return HANDLED;
   }
   DBG << "-> Rendered plugin request in " << (Time::currentTimeMillis() - startTime) << "ms" << endl;
-  
+
   // Note: MemoryOutputStream::getDataSize() is the actual number of bytes written.
   // Do not use MemoryBlock::getSize() since this reports the memory allocated (but not initialized!)
-  mg_printf(conn, "HTTP/1.0 200 OK\r\n"
-            "Content-Length: %d\r\n"
-            "Content-Type: %s\r\n"
-            "\r\n",
-            (int)ostream.getDataSize(), params.getContentType());
-  mg_write(conn, ostream.getData(), ostream.getDataSize());
 
   return HANDLED;
 }
