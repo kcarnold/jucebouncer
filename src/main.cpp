@@ -43,6 +43,7 @@ String resolveRelativePath(String relativePath) {
 
 // The caller is responsible for deleting the object that is returned
 AudioPluginInstance *createSynthInstance() {
+	int64 startTime = Time::currentTimeMillis();
   AudioPluginFormatManager pluginManager;
   pluginManager.addDefaultFormats();
 
@@ -50,9 +51,12 @@ AudioPluginInstance *createSynthInstance() {
   desc.fileOrIdentifier = resolveRelativePath(PLUGIN_REL_PATH);
   // DBG << desc.fileOrIdentifier << endl;
   desc.uid = 0;
+	DBG << "Resolve: " << Time::currentTimeMillis() - startTime << endl;
 
   String errorMessage;
   AudioPluginInstance *instance = pluginManager.createPluginInstance(desc, errorMessage);
+
+	DBG << "Create: " << Time::currentTimeMillis() - startTime << endl;
 
   if (!instance) {
     DBG << "Error creating plugin instance: " << errorMessage << endl;
@@ -62,6 +66,7 @@ AudioPluginInstance *createSynthInstance() {
   // Force initialization on the main thread. This preparation will redone with proper values later.
   instance->prepareToPlay(44100, 512);
 
+	DBG << "Prepared: " << Time::currentTimeMillis() - startTime << endl;
   return instance;
 }
 
