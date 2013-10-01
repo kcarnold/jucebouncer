@@ -53,7 +53,7 @@ AudioPluginInstance *createSynthInstance() {
 
   String errorMessage;
   AudioPluginInstance *instance = pluginManager.createPluginInstance(desc, errorMessage);
-  
+
   if (!instance) {
     DBG << "Error creating plugin instance: " << errorMessage << endl;
     exit(1);
@@ -134,7 +134,7 @@ void pluginParametersSetIndexed(AudioPluginInstance *instance, const NamedValueS
   }
 }
 
-bool handlePluginRequest(const PluginRequestParameters &params, OutputStream &ostream, 
+bool handlePluginRequest(const PluginRequestParameters &params, OutputStream &ostream,
                          ThreadSafePlugin *plugin = nullptr) {
   if (!plugin) {
     // It's very possible that all of this was a premature optimization.
@@ -203,7 +203,7 @@ bool handlePluginRequest(const PluginRequestParameters &params, OutputStream &os
     if (params.listParameters) {
       DBG << "Rendering parameter list: # parameters " << instance->getNumPrograms() << endl;
 
-      // Output each parameter setting in two places: 
+      // Output each parameter setting in two places:
       // an indexed array and a dictionary by name
       // All DynamicObjects created will be freed when their var's leave scope.
       DynamicObject *outer = new DynamicObject();
@@ -262,7 +262,7 @@ bool handlePluginRequest(const PluginRequestParameters &params, OutputStream &os
     MidiBuffer midiBuffer;
     midiBuffer.addEvent(MidiMessage::noteOn(params.midiChannel, (uint8)params.midiPitch, (uint8)params.midiVelocity),
                         0 /* time */);
-    midiBuffer.addEvent(MidiMessage::allNotesOff(params.midiChannel), 
+    midiBuffer.addEvent(MidiMessage::allNotesOff(params.midiChannel),
                         params.noteSeconds * params.sampleRate);
 
     AudioSampleBuffer buffer(params.nChannels, params.blockSize);
