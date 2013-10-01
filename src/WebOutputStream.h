@@ -23,7 +23,7 @@
   ==============================================================================
 */
 
-#include "../streams/juce_OutputStream.h"
+//#include "../streams/juce_OutputStream.h"
 
 
 //==============================================================================
@@ -54,7 +54,11 @@ public:
 
     /** Destructor. */
     ~WebOutputStream();
-
+	void flush();
+	bool flushBuffer();
+    bool setPosition (int64 newPosition) { return false; }
+	int64 getPosition() { return 0; }
+	
     bool write (const void* data, size_t numBytes);
     void writeRepeatedByte (uint8 byte, size_t numTimesToRepeat);
 
@@ -65,7 +69,7 @@ private:
     size_t bufferSize, bytesInBuffer;
     HeapBlock <char> buffer;
 
+	ssize_t writeInternal (const void* buf, size_t size);
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WebOutputStream)
 };
-
-#endif   // __JUCE_WebOUTPUTSTREAM_JUCEHEADER__

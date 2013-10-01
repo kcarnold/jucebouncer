@@ -23,8 +23,6 @@
   ==============================================================================
 */
 
-int64 juce_fileSetPosition (void* handle, int64 pos);
-
 //==============================================================================
 WebOutputStream::WebOutputStream (struct mg_connection *conn, const int bufferSize_)
     : conn(conn),
