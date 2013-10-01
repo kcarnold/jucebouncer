@@ -222,7 +222,7 @@
 		3D466BAB5E6CCC8138A6BD61 /* juce_IIRFilter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_IIRFilter.cpp; path = ../../../juce/modules/juce_audio_basics/effects/juce_IIRFilter.cpp; sourceTree = SOURCE_ROOT; };
 		3D672E692BF5B20CD8257209 /* juce_Random.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_Random.cpp; path = ../../../juce/modules/juce_core/maths/juce_Random.cpp; sourceTree = SOURCE_ROOT; };
 		3D89DAEF21704FB674A1CDFE /* juce_FileListComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_FileListComponent.h; path = ../../../juce/modules/juce_gui_basics/filebrowser/juce_FileListComponent.h; sourceTree = SOURCE_ROOT; };
-		3DA6438A54504395B2CB85F4 /* RecentFilesMenuTemplate.nib */ = {isa = PBXFileReference; lastKnownFileType = file.nib; path = RecentFilesMenuTemplate.nib; sourceTree = SOURCE_ROOT; };
+		3DA6438A54504395B2CB85F4 /* RecentFilesMenuTemplate.nib */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = RecentFilesMenuTemplate.nib; sourceTree = SOURCE_ROOT; };
 		3DB9AA80576A923BED80C677 /* juce_ImageCache.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_ImageCache.cpp; path = ../../../juce/modules/juce_graphics/images/juce_ImageCache.cpp; sourceTree = SOURCE_ROOT; };
 		3E1DAA977281F2496421993F /* juce_URL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_URL.cpp; path = ../../../juce/modules/juce_core/network/juce_URL.cpp; sourceTree = SOURCE_ROOT; };
 		3E889C9847F7E4648A57CD8B /* juce_module_info */ = {isa = PBXFileReference; lastKnownFileType = text; name = juce_module_info; path = ../../../juce/modules/juce_audio_devices/juce_module_info; sourceTree = SOURCE_ROOT; };
@@ -2544,7 +2544,7 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /usr/bin;
 				MACOSX_DEPLOYMENT_TARGET_ppc = 10.4;
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx10.6;
 				SDKROOT_ppc = macosx10.5;
 			};
 			name = Release;
@@ -2575,7 +2575,7 @@
 				INSTALL_PATH = /usr/bin;
 				MACOSX_DEPLOYMENT_TARGET_ppc = 10.4;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx10.6;
 				SDKROOT_ppc = macosx10.5;
 			};
 			name = Debug;
@@ -2597,7 +2597,7 @@
 				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PRODUCT_NAME = jucebouncer;
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx10.6;
 				WARNING_CFLAGS = "-Wreorder";
 				ZERO_LINK = NO;
 			};
@@ -2620,7 +2620,7 @@
 				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PRODUCT_NAME = jucebouncer;
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx10.6;
 				WARNING_CFLAGS = "-Wreorder";
 				ZERO_LINK = NO;
 			};
