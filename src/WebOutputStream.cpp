@@ -35,7 +35,6 @@ WebOutputStream::WebOutputStream (struct mg_connection *conn, const int bufferSi
 WebOutputStream::~WebOutputStream()
 {
     flushBuffer();
-    flushInternal();
 }
 
 
@@ -55,7 +54,6 @@ bool WebOutputStream::flushBuffer()
 void WebOutputStream::flush()
 {
     flushBuffer();
-    flushInternal();
 }
 
 bool WebOutputStream::write (const void* src, size_t numBytes)
@@ -71,7 +69,7 @@ bool WebOutputStream::write (const void* src, size_t numBytes)
             size_t toPutInBuffer = (numBytes > spaceRemaining)
                 ? spaceRemaining : numBytes;
             memcpy(buffer + bytesInBuffer, src, toPutInBuffer);
-            src += toPutInBuffer;
+            src = (const void *) ((size_t) src + toPutInBuffer);
             numBytes -= toPutInBuffer;
         }
 
@@ -94,7 +92,6 @@ void WebOutputStream::writeRepeatedByte (uint8 byte, size_t numBytes)
     {
         memset (buffer + bytesInBuffer, byte, numBytes);
         bytesInBuffer += numBytes;
-        currentPosition += numBytes;
     }
     else
     {
