@@ -35,35 +35,81 @@ WebOutputStream::WebOutputStream (struct mg_connection *conn, const int bufferSi
 WebOutputStream::~WebOutputStream()
 {
     flushBuffer();
-	mg_printf(conn, "0\r\n\r\n");
+    flushInternal();
 }
 
 
 bool WebOutputStream::flushBuffer()
 {
-	return true;
+    bool ok = true;
+
+    if (bytesInBuffer > 0)
+    {
+        ok = (writeInternal (buffer, bytesInBuffer) == (ssize_t) bytesInBuffer);
+        bytesInBuffer = 0;
+    }
+
+    return ok;
 }
 
 void WebOutputStream::flush()
 {
     flushBuffer();
+    flushInternal();
 }
 
 bool WebOutputStream::write (const void* const src, const size_t numBytes)
 {
     jassert (src != nullptr && ((ssize_t) numBytes) >= 0);
-	return writeInternal(src, numBytes) > 0;
+
+    if (bytesInBuffer + numBytes < bufferSize)
+    {
+        memcpy (buffer + bytesInBuffer, src, numBytes);
+        bytesInBuffer += numBytes;
+        currentPosition += numBytes;
+    }
+    else
+    {
+        if (! flushBuffer())
+            return false;
+
+        if (numBytes < bufferSize)
+        {
+            memcpy (buffer + bytesInBuffer, src, numBytes);
+            bytesInBuffer += numBytes;
+            currentPosition += numBytes;
+        }
+        else
+        {
+            const ssize_t bytesWritten = writeInternal (src, numBytes);
+
+            if (bytesWritten < 0)
+                return false;
+
+            currentPosition += bytesWritten;
+            return bytesWritten == (ssize_t) numBytes;
+        }
+    }
+
+    return true;
 }
 
 void WebOutputStream::writeRepeatedByte (uint8 byte, size_t numBytes)
 {
     jassert (((ssize_t) numBytes) >= 0);
-	OutputStream::writeRepeatedByte (byte, numBytes);
+
+    if (bytesInBuffer + numBytes < bufferSize)
+    {
+        memset (buffer + bytesInBuffer, byte, numBytes);
+        bytesInBuffer += numBytes;
+        currentPosition += numBytes;
+    }
+    else
+    {
+        OutputStream::writeRepeatedByte (byte, numBytes);
+    }
 }
 
 ssize_t WebOutputStream::writeInternal (const void* buf, size_t size) {
-	mg_printf(conn, "%zx\r\n", size);
-	mg_write(conn, buf, size);
-	mg_printf(conn, "\r\n");
-	return size;
+  mg_write(conn, buf, size);
 }
