@@ -8,7 +8,7 @@
 #include "WebOutputStream.cpp"
 
 
-#define PLUGIN_POOL_SIZE 0
+#define PLUGIN_POOL_SIZE 4
 #define PLUGIN_REL_PATH "plugins/miniTERA.vst"
 
 // #include <csignal>
