@@ -322,7 +322,7 @@ static int beginRequestHandler(struct mg_connection *conn) {
   }
 
   MemoryBlock block;
-  WebOutputStream ostream(conn);
+  WebOutputStream ostream(conn, 4096);
 
   // DBG << "Rendering plugin request" << endl;
   int64 startTime = Time::currentTimeMillis();
