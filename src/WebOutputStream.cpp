@@ -64,7 +64,6 @@ bool WebOutputStream::write (const void* const src, const size_t numBytes)
     {
         memcpy (buffer + bytesInBuffer, src, numBytes);
         bytesInBuffer += numBytes;
-        currentPosition += numBytes;
     }
     else
     {
@@ -75,7 +74,6 @@ bool WebOutputStream::write (const void* const src, const size_t numBytes)
         {
             memcpy (buffer + bytesInBuffer, src, numBytes);
             bytesInBuffer += numBytes;
-            currentPosition += numBytes;
         }
         else
         {
@@ -84,7 +82,6 @@ bool WebOutputStream::write (const void* const src, const size_t numBytes)
             if (bytesWritten < 0)
                 return false;
 
-            currentPosition += bytesWritten;
             return bytesWritten == (ssize_t) numBytes;
         }
     }
