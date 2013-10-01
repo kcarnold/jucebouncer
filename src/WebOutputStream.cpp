@@ -35,7 +35,7 @@ WebOutputStream::WebOutputStream (struct mg_connection *conn, const int bufferSi
 WebOutputStream::~WebOutputStream()
 {
     flushBuffer();
-	mg_printf(conn, "0\r\n\r\n");
+    mg_write(conn, "0\r\n\r\n", 5);
 }
 
 
@@ -62,7 +62,7 @@ void WebOutputStream::writeRepeatedByte (uint8 byte, size_t numBytes)
 }
 
 ssize_t WebOutputStream::writeInternal (const void* buf, size_t size) {
-	mg_printf(conn, "%zx\r\n", size);
+	mg_printf(conn, "%zX\r\n", size);
 	mg_write(conn, buf, size);
 	mg_printf(conn, "\r\n");
 	return size;
