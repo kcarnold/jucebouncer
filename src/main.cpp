@@ -322,10 +322,9 @@ static int beginRequestHandler(struct mg_connection *conn) {
   // DBG << "Rendering plugin request" << endl;
   int64 startTime = Time::currentTimeMillis();
   mg_printf(conn, "HTTP/1.0 200 OK\r\n"
-            "Content-Length: %d\r\n"
             "Content-Type: %s\r\n"
             "\r\n",
-            1024*1024*1024, params.getContentType());
+            params.getContentType());
 
   bool result = handlePluginRequest(params, ostream);
   if (!result) {
