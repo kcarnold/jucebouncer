@@ -112,4 +112,5 @@ void WebOutputStream::writeRepeatedByte (uint8 byte, size_t numBytes)
 
 ssize_t WebOutputStream::writeInternal (const void* buf, size_t size) {
   mg_write(conn, buf, size);
+  return size;
 }
