@@ -56,28 +56,36 @@ void WebOutputStream::flush()
     flushBuffer();
 }
 
-bool WebOutputStream::write (const void* src, size_t numBytes)
+bool WebOutputStream::write (const void* const src, const size_t numBytes)
 {
     jassert (src != nullptr && ((ssize_t) numBytes) >= 0);
 
-    while (numBytes > 0)
+    if (bytesInBuffer + numBytes < bufferSize)
     {
-        // Fill up the buffer.
-        if (bytesInBuffer < bufferSize)
-        {
-            size_t spaceRemaining = bufferSize - bytesInBuffer;
-            size_t toPutInBuffer = (numBytes > spaceRemaining)
-                ? spaceRemaining : numBytes;
-            memcpy(buffer + bytesInBuffer, src, toPutInBuffer);
-            src = (const void *) ((size_t) src + toPutInBuffer);
-            numBytes -= toPutInBuffer;
-        }
+        memcpy (buffer + bytesInBuffer, src, numBytes);
+        bytesInBuffer += numBytes;
+        currentPosition += numBytes;
+    }
+    else
+    {
+        if (! flushBuffer())
+            return false;
 
-        // If the buffer is now full, flush it.
-        if (bytesInBuffer == bufferSize)
+        if (numBytes < bufferSize)
         {
-            if (! flushBuffer())
+            memcpy (buffer + bytesInBuffer, src, numBytes);
+            bytesInBuffer += numBytes;
+            currentPosition += numBytes;
+        }
+        else
+        {
+            const ssize_t bytesWritten = writeInternal (src, numBytes);
+
+            if (bytesWritten < 0)
                 return false;
+
+            currentPosition += bytesWritten;
+            return bytesWritten == (ssize_t) numBytes;
         }
     }
 
